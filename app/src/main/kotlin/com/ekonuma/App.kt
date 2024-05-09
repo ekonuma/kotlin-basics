@@ -3,9 +3,6 @@
  */
 package com.ekonuma
 
-import com.ekonuma.Quiz.StudentProgress.printProgressBar
-import com.ekonuma.Quiz.StudentProgress.progressText
-
 //データクラス
 //汎用 （ジェネリック）
 data class Question<T>(
@@ -19,31 +16,59 @@ enum class Difficulty {
     EASY, MEDIUM, HARD
 }
 
-class Quiz {
-    val question1 = Question<String>("Quoth the raven ___", "nevermore", Difficulty.MEDIUM)
-    val question2 = Question<Boolean>("The sky is green. True or false", false, Difficulty.EASY)
-    val question3 = Question<Int>("How many days are there between full moons?", 28, Difficulty.HARD)
+class Quiz : ProgressPrintable {
+    val question1 = Question("Quoth the raven ___", "nevermore", Difficulty.MEDIUM)
+    val question2 = Question("The sky is green. True or false", false, Difficulty.EASY)
+    val question3 = Question("How many days are there between full moons?", 28, Difficulty.HARD)
+
+    override fun printProgressBar() {
+        repeat(answered) { print("▓") }
+        repeat(total - answered) { print("▒") }
+        println(progressText)
+    }
+
+    fun printQuiz() {
+        question1.let {
+            println(it.questionText)
+            println(it.answer)
+            println(it.difficulty)
+        }
+        println()
+        question2.let {
+            println(it.questionText)
+            println(it.answer)
+            println(it.difficulty)
+        }
+        println()
+        question3.let {
+            println(it.questionText)
+            println(it.answer)
+            println(it.difficulty)
+        }
+        println()
+    }
+
+    override val progressText: String
+        get() = "${answered} of ${total} answered"
 
     //オブジェクト
     companion object StudentProgress {
-        fun StudentProgress.printProgressBar() {
-            repeat(Quiz.answered) { print("▓") }
-            repeat(Quiz.total - Quiz.answered) { print("▒") }
-            println()
-            println(Quiz.progressText)
-        }
-        val StudentProgress.progressText: String
-            get() = "${Quiz.answered} of ${Quiz.total} answered."
         var total: Int = 10
         var answered: Int = 3
     }
 }
 
+interface ProgressPrintable {
+    val progressText: String
+    fun printProgressBar()
+}
+
 fun main() {
-    val quiz = Quiz()
+    val quiz = Quiz().apply {
+        printQuiz()
+    }
     println("${quiz.question1} ${quiz.question2} ${quiz.question3}")
-    println(Quiz.progressText)
-    println(Quiz.printProgressBar())
+    println(quiz.printProgressBar())
 }
 
 
