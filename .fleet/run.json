@@ -2,7 +2,7 @@
     "configurations": [
         
         {
-            "name": "AppKt (1)",
+            "name": "AppKt",
             "type": "command",
             "workingDir": "$PROJECT_DIR$",
             "program": "$USER_HOME$/.sdkman/candidates/java/17.0.7-tem/bin/java",
